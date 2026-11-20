@@ -1,5 +1,6 @@
 from datetime import timedelta
 from functools import partial
+import gc
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
@@ -70,6 +71,11 @@ def run_rank(rank, directory):
         copy_actor(resumed, replica)
         torch.testing.assert_close(replica.lm_head.weight, expected.lm_head.weight)
     finally:
+        # Release FSDP hooks/work references before interpreter shutdown. This
+        # is fixture lifetime cleanup, not a change to the production update.
+        actor = resumed = optimizer = resumed_optimizer = None
+        gc.collect()
+        dist.barrier()
         dist.destroy_process_group()
 
 

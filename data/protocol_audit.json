@@ -1,0 +1,32 @@
+{
+  "schema": "command-first-conversion-audit-v1",
+  "rows": 2376,
+  "batches": 297,
+  "action_counts": {
+    "bad:generate": 129,
+    "bad:image_search": 219,
+    "bad:query_knowledge": 27,
+    "bad:search": 219,
+    "good:generate": 492,
+    "good:image_search": 650,
+    "good:query_knowledge": 430,
+    "good:search": 210
+  },
+  "reasoning_text_and_tokens_unchanged": true,
+  "target_semantics_checked": 2376,
+  "history_actions_semantics_checked": 6091,
+  "historical_format_errors_preserved": 1,
+  "all_online_prefixes_verified": true,
+  "sample_ids_labels_order_and_metadata_unchanged": true,
+  "batch_file_byte_identical": true,
+  "max_tokens_before": 11081,
+  "max_tokens_after": 11078,
+  "current_reasoning_native_tag_mentions": 0,
+  "native_manifest_sha256": "f86a97b40bf7264ba92f5188d2e7dc0b4c7e3f2ec7a8560fa84a89042aedfdff",
+  "converted_manifest_sha256": "85b19dccc73991e0b66d6480ca69f35e67af79abb20908d189e8d2e1ca50b825",
+  "tokenizer_sha256": {
+    "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "chat_template.jinja": "3636d0f0bd6bef02654cdffdc447b79cb2cef8ab02cc75267345946291a489e4",
+    "tokenizer_config.json": "cf43a5bf1a49ee69ecced02f419b169e72559034dcf15af47cf775bd253830f0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "base_repository": "https://github.com/leiye302/genevolve-2b-rethink-a100-4x",
+  "base_commit": "b18f659e563d36fc161357da5ddfd65f4266af8f",
+  "unchanged_core_lf_sha256": {
+    "genevolve_repro/route_sft.py": "d9de61a8742f8d9350210bff7e79a523a124604fc3f9ed0c3b4bcd2285d3888a",
+    "genevolve_repro/objectives.py": "45cd2c5adae3c003730cea1e8cf4193cd8f948e61958982608c0ef9ac12b8caa",
+    "genevolve_repro/distributed.py": "a0a98bf8d97ed456f3d65fd4a72d11b42fffbf8e6e12d07e5a06698f35608e3e",
+    "genevolve_repro/feedback.py": "5b017b36514aafa86e481fa07a5eefbe05a3b5521aa5e1b855195fa38678c05c",
+    "genevolve_repro/evaluate.py": "5798e1cd640907d1f39e8ea386bbab9e25eaa5cca55e8d13283742f8f0856e2b",
+    "genevolve_repro/evaluation_render.py": "fd1a4f6273a9675e24626f24363471b0140890ff52e7e2fe45c88669e1e9013d",
+    "genevolve_repro/hints.py": "ecca8c4e3e9f458bd53066484345c752862ffd1ee88ecc99dce9985824d9861a",
+    "genevolve_repro/memory.py": "8989ac891e1904fb77bfd294b0d81c6309f025eee004056aa00cf988caa01634",
+    "genevolve_repro/render_service.py": "b6c49eef79d660dfa1cdfc0d8383a8153478fe80a0b3ea8e6eb8c5def83ca5f1",
+    "configs/evolve.json": "5522b6c78181a23d600a02e705deb8ef4d7349293c09bc2f8dd44d0804decbef",
+    "configs/genevolve_sdl.json": "7d61cbef283fe8b9afb6e5781be866fcab97b56805671ab33635571c59117fd2",
+    "configs/rethink.json": "e0d04764f677a5f72016a8a9349d914e8bf9fe559c8e42a337d83e99d3629c9d",
+    "configs/local_hint_system.txt": "30013116c2d0f8b7c6baa2deb71346c165914a87f2906a086994eaec47ff0be5",
+    "sources.json": "87901f71b18de1bf986c05ba33a4cd8da6cb6be82f33ba0d1bbc20e65cc4eb76"
+  },
+  "route_config_changed_fields": [
+    "action_protocol",
+    "manifest_sha256",
+    "schema"
+  ],
+  "protocol_function_allowlist": {
+    "genevolve_repro/evolve.py": [
+      "_loop"
+    ],
+    "genevolve_repro/policy.py": [
+      "action_indices",
+      "make_agent"
+    ],
+    "genevolve_repro/teacher.py": [
+      "is_routed"
+    ]
+  },
+  "original_objectives_unchanged": true,
+  "gpu_training_verified": false
+}

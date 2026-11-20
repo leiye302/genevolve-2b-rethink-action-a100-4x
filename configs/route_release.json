@@ -1,0 +1,11 @@
+{
+  "tag": "route-sft-command-first-v1",
+  "name": "genevolve-route-sft-command-first-v1.zip",
+  "bytes": 39371455,
+  "sha256": "7fbbccc9c830940e5a9fb23cde1d96899aa601a422365c1063a9e9b681e7aaf9",
+  "files": {
+    "manifest.json": {"bytes": 3687, "sha256": "85b19dccc73991e0b66d6480ca69f35e67af79abb20908d189e8d2e1ca50b825"},
+    "train.jsonl": {"bytes": 172974671, "sha256": "74e0648f835f40b77d7764c6ace94392bea7a39aa6ebb50965355f2f4bd3d969"},
+    "batches.jsonl": {"bytes": 105671, "sha256": "10dc620f637ca6f883e24ecdd28eb1f07b0f06fb08cee17d119a96085b53a76f"}
+  }
+}

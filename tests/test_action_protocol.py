@@ -152,11 +152,11 @@ class ActionProtocolTest(unittest.TestCase):
             self.assertEqual(tok.decode([ids[i] for i in selected]), action)
             self.assertNotIn(tok.specials['<RETHINK>'], [ids[i] for i in selected])
 
-    def test_no_type_bce_or_new_training_settings(self):
+    def test_no_type_bce_and_requested_one_epoch_schedule(self):
         cfg = read_json(ROOT/'configs/route_sft.json')
         self.assertEqual(cfg['action_protocol'], ACTION_PROTOCOL)
         for key, value in {'parent_step':550,'world_size':4,'micro_batch':1,'good_per_batch':6,
-                           'bad_per_batch':2,'batches_per_epoch':297,'epochs':2,'max_length':12288,
+                           'bad_per_batch':2,'batches_per_epoch':297,'epochs':1,'max_length':12288,
                            'loss_reduction':'sample_mean','suffix_ce_weight':1.0,'route_lambda':0.1,
                            'reference_kl_coef':0.0,'lr':2e-6,'seed':0}.items():
             self.assertEqual(cfg[key], value, key)
@@ -167,6 +167,11 @@ class ActionProtocolTest(unittest.TestCase):
         for name, expected in report['unchanged_core_lf_sha256'].items():
             text = (ROOT/name).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
             self.assertEqual(hashlib.sha256(text.encode()).hexdigest(), expected, name)
+        for name, change in report['validation_message_only'].items():
+            text = (ROOT/name).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
+            self.assertEqual(text.count(change['current_message']), 1)
+            restored = text.replace(change['current_message'], change['base_message'])
+            self.assertEqual(hashlib.sha256(restored.encode()).hexdigest(), change['base_lf_sha256'], name)
         audit = read_json(ROOT/'data/protocol_audit.json')
         cfg = read_json(ROOT/'configs/route_sft.json')
         lock = read_json(ROOT/'configs/route_release.json')

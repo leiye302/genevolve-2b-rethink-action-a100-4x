@@ -8,7 +8,7 @@
   "good_per_batch": 6,
   "bad_per_batch": 2,
   "batches_per_epoch": 297,
-  "epochs": 2,
+  "epochs": 1,
   "max_length": 12288,
   "truncation": "error",
   "loss_reduction": "sample_mean",

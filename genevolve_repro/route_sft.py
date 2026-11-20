@@ -114,7 +114,7 @@ def verify_route_export(path, cfg=None, expected_contract=None):
     if (done.get("algorithm") != "route-sft" or done.get("step") != total
             or identity.get("config") != cfg
             or identity.get("route_data_source_sha256") != source_checkpoint_lock()):
-        raise ValueError("Stage 2 must start from the complete two-epoch Route-SFT HF export.")
+        raise ValueError("Stage 2 must start from the complete Route-SFT HF export for the configured epoch count.")
     verify_artifact_identity(identity.get("manifest_sha256"), identity.get("artifact_sha256"), cfg)
     verify_parent_identity(identity.get("parent"), cfg)
     if expected_contract is not None and identity != expected_contract:

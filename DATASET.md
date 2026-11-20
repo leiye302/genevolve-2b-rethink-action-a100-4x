@@ -11,7 +11,7 @@ The archive has exactly three files: `manifest.json`, `train.jsonl`, `batches.js
 
 ## Composition and unchanged selection
 
-2,376 decisions: 1,782 Good + 594 Bad (394 natural, 200 synthetic same-state contrasts), 297 fixed batches of 6:2, two epochs / 594 updates. The paired synthetic Bad and its source Good stay in the same batch. There is no additional validation split.
+2,376 decisions: 1,782 Good + 594 Bad (394 natural, 200 synthetic same-state contrasts), 297 fixed batches of 6:2, one epoch / 297 updates. The paired synthetic Bad and its source Good stay in the same batch. There is no additional validation split. The epoch change does not modify the dataset or its checksums.
 
 | Command | Good | Bad | Total |
 | --- | ---: | ---: | ---: |

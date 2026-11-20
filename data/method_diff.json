@@ -2,7 +2,6 @@
   "base_repository": "https://github.com/leiye302/genevolve-2b-rethink-a100-4x",
   "base_commit": "b18f659e563d36fc161357da5ddfd65f4266af8f",
   "unchanged_core_lf_sha256": {
-    "genevolve_repro/route_sft.py": "d9de61a8742f8d9350210bff7e79a523a124604fc3f9ed0c3b4bcd2285d3888a",
     "genevolve_repro/objectives.py": "45cd2c5adae3c003730cea1e8cf4193cd8f948e61958982608c0ef9ac12b8caa",
     "genevolve_repro/distributed.py": "a0a98bf8d97ed456f3d65fd4a72d11b42fffbf8e6e12d07e5a06698f35608e3e",
     "genevolve_repro/feedback.py": "5b017b36514aafa86e481fa07a5eefbe05a3b5521aa5e1b855195fa38678c05c",
@@ -17,8 +16,16 @@
     "configs/local_hint_system.txt": "30013116c2d0f8b7c6baa2deb71346c165914a87f2906a086994eaec47ff0be5",
     "sources.json": "87901f71b18de1bf986c05ba33a4cd8da6cb6be82f33ba0d1bbc20e65cc4eb76"
   },
+  "validation_message_only": {
+    "genevolve_repro/route_sft.py": {
+      "base_lf_sha256": "d9de61a8742f8d9350210bff7e79a523a124604fc3f9ed0c3b4bcd2285d3888a",
+      "base_message": "Stage 2 must start from the complete two-epoch Route-SFT HF export.",
+      "current_message": "Stage 2 must start from the complete Route-SFT HF export for the configured epoch count."
+    }
+  },
   "route_config_changed_fields": [
     "action_protocol",
+    "epochs",
     "manifest_sha256",
     "schema"
   ],
@@ -34,6 +41,7 @@
       "is_routed"
     ]
   },
+  "requested_schedule_change": {"epochs": 1, "updates": 297, "other_hyperparameters_unchanged": true},
   "original_objectives_unchanged": true,
   "gpu_training_verified": false
 }

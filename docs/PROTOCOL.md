@@ -2,6 +2,8 @@
 
 This is a protocol ablation relative to native RETHINK commit `b18f659e563d36fc161357da5ddfd65f4266af8f`. It is not the subsequent type-BCE experiment. The original repository is not modified.
 
+The later requested schedule update changes both public variants to **one epoch / 297 updates**. No other hyperparameter or objective is changed by that update. Use a new WORK from the same SFT-550 parent: an old 297-step checkpoint from a two-epoch cosine schedule is not the new one-epoch endpoint, and old 594-step exports are not accepted for this stage-two handoff.
+
 ## Mapping
 
 | Native serialization | Command-first serialization | Same effect |
@@ -42,7 +44,8 @@ Unified boundaries do not guarantee better stopping, stronger marker discriminat
 - `policy.py`: same actor factory for training/eval; updated SDL spans only.
 - `teacher.py`: marker-position telemetry updated; routing/hint/loss unchanged.
 - `route_data.py`: converted pack integrity and boundary checks.
-- `route_sft.py`, `objectives.py`, `feedback.py`, `distributed.py`: unchanged training/loss/runtime implementations.
+- `route_sft.py`: unchanged training/loss implementation; only the export-validation error message now refers to the configured epoch count instead of hard-coding two epochs.
+- `objectives.py`, `feedback.py`, `distributed.py`: unchanged training/loss/runtime implementations.
 - `scripts/build_action_pack.py`: full-library conversion and equivalence audit.
 
 Hashes and core-method comparisons are provided in `data/`. The test suite and clean public download are CPU evidence; no GPU training or live scoring result is supplied with this protocol release.

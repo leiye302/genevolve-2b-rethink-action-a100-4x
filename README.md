@@ -4,6 +4,8 @@
 
 保留同一份 **Qwen3-VL-2B GenEvolve SFT-550** 起点、原 Route-SFT 配方，以及二阶段 **GenEvolve GRPO + SDL + Actor-routed Teacher-only hint**。不重训 SFT-550，不引入 type BCE、reasoning KL 或额外辅助阶段。不把 GenEvolve SDL 改成 SDAR 的蒸馏或门控。
 
+**训练轮次更新：**本仓库与原生 type-BCE 版均改为 **1 epoch / 297 updates**。除这项明确的训练时长调整外，协议对照的其他设置不变。
+
 ## 1. 新动作协议
 
 每回合只有一个 action，下面四行是四种选择，不是一次输出四个动作：
@@ -34,12 +36,12 @@ Bad:  <think>原 reasoning</think>\n<RETHINK><action>命令名 已审核的纠�
 | Bad | 594（394 自然 + 200 同状态合成） |
 | 总计 | 2,376 |
 | 固定批次 | 297，每批 6 Good + 2 Bad |
-| 训练轮次 / updates | 2 / 594 |
+| 训练轮次 / updates | 1 / 297 |
 | 最终 `generate` 目标 | 621（492 Good + 129 Bad） |
 
 没有换样本、标签或纠正内容。转换核对了全部 2,376 个目标和 6,091 段历史 assistant 响应的执行含义；当前 reasoning 文本和 token 保持原样，批次文件逐字节不变。**动作格式改变，所以受监督 action token 必然重新编码**，不能称整个 token 包与旧版相同。最长 11,078 tokens，上限仍为 12,288，超长报错、不截断。原数据中一个历史格式失败仍保留为失败，没有伪造成功反馈。[数据说明](DATASET.md) · [机器可读核对结果](data/protocol_audit.json)。
 
-## 3. 一阶段配方不变
+## 3. 一阶段损失不变，训练一轮
 
 令 $s_i$ 为历史与 reasoning 结束后的路由位置，$y_i$ 为 Bad 标签，$A_i$ 为完整监督后缀（含 Bad marker 及 EOS）：
 
@@ -53,7 +55,7 @@ $$
 - CE 先对每个样本后缀取均值，再跨样本取均值；不增加命令类型均衡、重采样或长度归一化新方案。
 - 全局 batch 8 = 四卡 × micro 1 × 累积 2。AdamW，LR `2e-6`，betas `(0.9,0.95)`，weight decay `0.01`，warmup `10%`，cosine，clip `1.0`，seed `0`。
 - 语言参数全参训练，视觉塔冻结；无 reasoning CE、无 KL、无 LoRA。只注册一个 `<RETHINK>`；`<action>` 和命令使用原 tokenizer。
-- 每轮保存可续训状态和 HF 导出（297、594 步）。本包没有额外 SFT val split；给定前缀 marker 概率不是自由生成触发率。
+- 单轮结束保存可续训状态和 HF 导出（297 步）；cosine 总步数改为 297，warmup 仍按 10% 取整。本包没有额外 SFT val split；给定前缀 marker 概率不是自由生成触发率。
 
 ## 4. 二阶段与评测不变的部分
 
@@ -106,7 +108,7 @@ read -rsp 'Judge key: ' JUDGE_API_KEY; printf '\n'
 read -rsp 'Hint key: ' GENEVOLVE_HINT_API_KEY; printf '\n'
 export SERPER_API_KEY JUDGE_API_KEY GENEVOLVE_HINT_API_KEY
 python run.py --work "$WORK" prepare
-python run.py --work "$WORK" rethink --sft-checkpoint "$WORK/route_sft/hf-step-00594" --steps 50
+python run.py --work "$WORK" rethink --sft-checkpoint "$WORK/route_sft/hf-step-00297" --steps 50
 python run.py --work "$WORK" eval --split bench
 ```
 

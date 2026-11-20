@@ -17,7 +17,7 @@ class LaunchAllTest(unittest.TestCase):
         self.work = root / "work"
         self.parent = root / "checkpoint-550"
         self.pack = root / "route-sft-v3"
-        self.final = self.work / "route_sft" / "hf-step-00594"
+        self.final = self.work / "route_sft" / "hf-step-00297"
         self.args = Namespace(command="all", parent=self.parent, data=self.pack, steps=30, eval=False)
         stack = self.enterContext(ExitStack())
         stack.enter_context(redirect_stdout(StringIO()))

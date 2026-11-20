@@ -305,7 +305,7 @@ class RethinkTest(unittest.TestCase):
         with TemporaryDirectory() as temp, patch.multiple(
             evolve, load_upstream=lambda: None, required_env=lambda _: "offline-fixture",
             embedding_ready=lambda _: True, examples=lambda *_: [example] * 2575, verify_split=lambda *_: "fixture-sha",
-            verify_route_export=lambda _: {"completed": 594}, make_sharded_actor=lambda *args: actor,
+            verify_route_export=lambda _: {"completed": 297}, make_sharded_actor=lambda *args: actor,
             load_model=lambda *args: deepcopy(actor), ActorScorer=lambda model: model,
             copy_actor=lambda src, dst: dst.load_state_dict(src.state_dict()), Embedder=lambda *_: lambda _: [1.0],
             LiveFeedback=lambda *args: feedback, make_agent=lambda *a, **k: None, gather_group=rollout,
@@ -336,7 +336,7 @@ class RethinkTest(unittest.TestCase):
             parent = Path(tmp) / "parent"
             fake_export(parent)
             fake_export(path)
-            with self.assertRaisesRegex(ValueError, "two-epoch"):
+            with self.assertRaisesRegex(ValueError, "configured epoch count"):
                 verify_route_export(path)
             identity = {
                 "config": cfg, "manifest_sha256": cfg["manifest_sha256"],
@@ -344,9 +344,17 @@ class RethinkTest(unittest.TestCase):
                 "route_data_source_sha256": source_checkpoint_lock(),
                 "parent": verify_parent(parent),
             }
-            write_json(path / "completed.json", {"step": 594, "algorithm": "route-sft", "contract": identity})
+            write_json(path / "completed.json", {"step": 297, "algorithm": "route-sft", "contract": identity})
             write_json(path / "export_sha256.json", sft_manifest(path))
-            self.assertEqual(verify_route_export(path, expected_contract=identity)["completed"]["step"], 594)
+            self.assertEqual(verify_route_export(path, expected_contract=identity)["completed"]["step"], 297)
+            # An old epoch-1 export used a two-epoch cosine schedule; it is not this run.
+            for step, saved_cfg in ((296, cfg), (594, cfg),
+                                    (297, {**cfg, "epochs": 2}), (594, {**cfg, "epochs": 2})):
+                write_json(path / "completed.json", {"step": step, "algorithm": "route-sft",
+                                                      "contract": {**identity, "config": saved_cfg}})
+                with self.assertRaisesRegex(ValueError, "configured epoch count"):
+                    verify_route_export(path)
+            write_json(path / "completed.json", {"step": 297, "algorithm": "route-sft", "contract": identity})
             (parent / "model.safetensors").write_bytes(b"a different step 550 export")
             with self.assertRaisesRegex(ValueError, "supplied 2B parent"):
                 verify_route_export(path, expected_contract={**identity, "parent": verify_parent(parent)})
